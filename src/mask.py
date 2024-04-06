@@ -1,6 +1,5 @@
-def security_card(num: str | int) -> str:
+def security_card(num: str) -> str:
     """маскирует номер карты"""
-    num = str(num)
     if num.isdigit() and len(num) == 16:
         list_num: list = []
         list_num.extend(num)
@@ -13,9 +12,8 @@ def security_card(num: str | int) -> str:
     return "не правильно введены данные"
 
 
-def security_num(num: str | int) -> str:
+def security_num(num: str) -> str:
     """маскирует номер счета"""
-    num = str(num)
     if num.isdigit() and len(num) == 20:
         return "**" + num[-4:]
     return "не правильно введены данные"
