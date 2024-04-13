@@ -4,4 +4,5 @@ def filter_dict(dictionary: list[dict], argument: str = "EXECUTED") -> list[dict
 
 
 def sort_dict(dictionary: list[dict], reverse: bool = False) -> list[dict]:
+    """сортирует список со словарями"""
     return sorted(dictionary, key=lambda x: x["date"], reverse=reverse)
