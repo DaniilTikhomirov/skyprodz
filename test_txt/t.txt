@@ -1,0 +1,2 @@
+04-19-24 00:38:22 my_function error: TypeError Input:(), {}
+04-19-24 00:38:22 my_function ok
