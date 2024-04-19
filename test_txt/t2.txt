@@ -10,3 +10,5 @@
 04-19-24 01:00:45 my_function error: TypeError Input:(1, '2'), {}
 04-19-24 01:04:02 my_function ok
 04-19-24 01:04:02 my_function error: TypeError Input:(1, '2'), {}
+04-19-24 11:53:53 my_function ok
+04-19-24 11:53:53 my_function error: TypeError Input:(1, '2'), {}

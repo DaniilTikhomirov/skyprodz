@@ -1,10 +1,10 @@
-import os
 import datetime
+import os
 import typing
 
 
-def log(*, filename: str | None = None):
-    def wrapper(func):
+def log(*, filename: str | None = None) -> typing.Callable:
+    def wrapper(func: typing.Callable) -> typing.Callable:
         def init(*args: typing.Any, **kwargs: typing.Any) -> str:
             """
             проверяет дали ли названия файла если нет то пишет в консоль
@@ -16,20 +16,22 @@ def log(*, filename: str | None = None):
                     try:
                         func(*args, **kwargs)
                     except Exception as exeption:
-                        time = str(datetime.datetime.now().strftime('%m-%d-%y %H:%M:%S'))
+                        time = str(datetime.datetime.now().strftime("%m-%d-%y %H:%M:%S"))
                         file.write(f"{time} my_function error: {type(exeption).__name__} Input:{args}, {kwargs}\n")
+                        return f"{time} my_function error: {type(exeption).__name__} Input:{args}, {kwargs}"
                     else:
-                        time = str(datetime.datetime.now().strftime('%m-%d-%y %H:%M:%S'))
+                        time = str(datetime.datetime.now().strftime("%m-%d-%y %H:%M:%S"))
                         file.write(f"{time} my_function ok\n")
+                        return f"{time} my_function ok"
             else:
                 try:
                     func(*args, **kwargs)
                 except Exception as exeption:
-                    time = str(datetime.datetime.now().strftime('%m-%d-%y %H:%M:%S'))
+                    time = str(datetime.datetime.now().strftime("%m-%d-%y %H:%M:%S"))
                     print(f"{time} my_function error: {type(exeption).__name__} Input:{args}, {kwargs}")
                     return f"{time} my_function error: {type(exeption).__name__} Input:{args}, {kwargs}"
                 else:
-                    time = str(datetime.datetime.now().strftime('%m-%d-%y %H:%M:%S'))
+                    time = str(datetime.datetime.now().strftime("%m-%d-%y %H:%M:%S"))
                     print(f"{time} my_function ok")
                     return f"{time} my_function ok"
 
