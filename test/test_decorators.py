@@ -26,7 +26,7 @@ def sum_2(a: Any, b: Any) -> Any:
 )
 def test_log_file(a: str | int, b: str | int, answer: str) -> None:
     sum_(a, b)
-    with open("..\\test_txt\\t2.txt", "r", encoding="utf-8") as f:
+    with open("t2.txt", "r", encoding="utf-8") as f:
         for line in f:
             pass
     assert line.strip() == answer
