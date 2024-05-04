@@ -1,5 +1,7 @@
 import pytest
 from src.utils import unpack_json
+from unittest.mock import Mock
+
 
 
 @pytest.fixture
@@ -39,4 +41,9 @@ def data() -> list[dict]:
 
 
 def test_unpack_json(data: list[dict]) -> None:
-    assert unpack_json("test_data\\test.json") == data
+    assert unpack_json("C:\\Users\\Student Free\\PycharmProjects\\Bank_project\\test\\test_data\\test.json") == data
+
+
+def test_write_xml_from_web(data: list[dict]) -> None:
+    write_xml_from_web_mock = Mock(return_value="xml-file")
+    assert write_xml_from_web_mock() == "xml-file"

@@ -1,6 +1,7 @@
 import json
 from typing import Any
 import requests
+import os.path
 
 
 def unpack_json(path: str) -> Any:
@@ -29,5 +30,5 @@ def write_xml_from_web(url: str, name: str) -> None:
     :return: None
     """
     req = requests.get(url)
-    with open(f"..\\data\\{name}.xml", "wb") as file:
+    with open(os.path.join("..", "data", f"{name}.xml"), "wb") as file:
         file.write(req.content)

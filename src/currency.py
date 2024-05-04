@@ -1,7 +1,7 @@
 from decimal import Decimal
 import xml.etree.ElementTree as ET
 from datetime import datetime
-from utils import write_xml_from_web
+from src.utils import write_xml_from_web
 
 # словарь код валюты: ID валюты
 CODE_CURRENCY = {'AUD': 'R01010', 'AZN': 'R01020A', 'GBP': 'R01035', 'AMD': 'R01060', 'BYN': 'R01090B', 'BGN': 'R01100',
@@ -36,6 +36,7 @@ def get_currencies(currency: str) -> Decimal:
     for child in root:
         if child.attrib['ID'] == CODE_CURRENCY[currency]:
             return Decimal(child.find('Value').text.replace(',', '.'))
+    return Decimal('0')
 
 
 def calculate_amount_in_rub(operation: dict) -> Decimal:
