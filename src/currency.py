@@ -39,6 +39,11 @@ def get_currencies(currency: str) -> Decimal:
 
 
 def calculate_amount_in_rub(operation: dict) -> Decimal:
+    """
+    считает сумму операции в рублях
+    :param operation: операция
+    :return: сумма операции в рублях
+    """
     code_currency = operation['operationAmount']['currency']['code']
     amount = operation['operationAmount']['amount']
     amount_in_rub = Decimal(str(amount)) * get_currencies(code_currency)
