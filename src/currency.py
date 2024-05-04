@@ -20,6 +20,8 @@ def get_currencies(currency: str) -> Decimal:
     :param currency: валюта
     :return: цена валюты
     """
+    if currency == "RUB":
+        return Decimal('1')
     # получает актуальную дату
     time_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
     # использую дату как ссылку для xml данных центра банка
@@ -34,3 +36,10 @@ def get_currencies(currency: str) -> Decimal:
     for child in root:
         if child.attrib['ID'] == CODE_CURRENCY[currency]:
             return Decimal(child.find('Value').text.replace(',', '.'))
+
+
+def calculate_amount_in_rub(operation: dict) -> Decimal:
+    code_currency = operation['operationAmount']['currency']['code']
+    amount = operation['operationAmount']['amount']
+    amount_in_rub = Decimal(str(amount)) * get_currencies(code_currency)
+    return amount_in_rub
