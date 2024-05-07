@@ -1,6 +1,7 @@
 import pytest
 from src.utils import unpack_json
 from unittest.mock import Mock
+import os.path
 
 
 @pytest.fixture
@@ -28,7 +29,7 @@ def data() -> list[dict]:
 
 
 def test_unpack_json(data: list[dict]) -> None:
-    assert unpack_json("C:\\Users\\Student Free\\PycharmProjects\\Bank_project\\test\\test_data\\test.json") == data
+    assert unpack_json(os.path.join("test_data", "test.json")) == data
 
 
 def test_write_xml_from_web(data: list[dict]) -> None:

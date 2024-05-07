@@ -2,6 +2,7 @@ from decimal import Decimal
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from src.utils import write_xml_from_web
+import os.path
 
 # словарь код валюты: ID валюты
 CODE_CURRENCY = {
@@ -66,14 +67,15 @@ def get_currencies(currency: str) -> Decimal:
     # функция которая записывает xml с айта
     write_xml_from_web(url, "cbr")
     # парсим данные с нашего файла
-    three = ET.parse("..\\data\\cbr.xml")
+    three = ET.parse(os.path.join("..", "data", "cbr.xml"))
     # получаем корневой элемент
     root = three.getroot()
-    # проходимся по корню
+    # проходимся по корню`
     for child in root:
         if child.attrib["ID"] == CODE_CURRENCY[currency]:
-            print(type(child.find("Value")))
-            return Decimal(str(child.find("Value").text).replace(",", "."))
+            a = child.find("Value")
+            value = a.text
+            return Decimal(str(value).replace(",", "."))
     return Decimal("0")
 
 
@@ -85,5 +87,8 @@ def calculate_amount_in_rub(operation: dict) -> Decimal:
     """
     code_currency = operation["operationAmount"]["currency"]["code"]
     amount = operation["operationAmount"]["amount"]
-    amount_in_rub = Decimal(str(amount)) * get_currencies(code_currency)
+    amount_in_rub = Decimal(amount) * get_currencies(code_currency)
     return amount_in_rub
+
+
+print(get_currencies("USD"))
