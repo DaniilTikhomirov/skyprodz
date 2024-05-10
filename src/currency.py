@@ -52,7 +52,7 @@ CODE_CURRENCY = {
 }
 
 
-def get_currencies(currency: str) -> Decimal:
+def get_currencies(currency: str) -> Decimal | bool:
     """
     находит в xml файле цену этой валюты в рублях
     :param currency: валюта
@@ -73,13 +73,16 @@ def get_currencies(currency: str) -> Decimal:
     # проходимся по корню`
     for child in root:
         if child.attrib["ID"] == CODE_CURRENCY[currency]:
-            a = child.find("Value")
-            value = a.text
-            return Decimal(str(value).replace(",", "."))
+            element = child.find("Value")
+            if element is not None:
+                value = element.text
+                return Decimal(str(value).replace(",", "."))
+            else:
+                return False
     return Decimal("0")
 
 
-def calculate_amount_in_rub(operation: dict) -> Decimal:
+def calculate_amount_in_rub(operation: dict) -> Decimal | str:
     """
     считает сумму операции в рублях
     :param operation: операция
@@ -87,8 +90,8 @@ def calculate_amount_in_rub(operation: dict) -> Decimal:
     """
     code_currency = operation["operationAmount"]["currency"]["code"]
     amount = operation["operationAmount"]["amount"]
-    amount_in_rub = Decimal(amount) * get_currencies(code_currency)
-    return amount_in_rub
-
-
-print(get_currencies("USD"))
+    currency = get_currencies(code_currency)
+    if currency:
+        amount_in_rub = Decimal(amount) * currency
+        return amount_in_rub
+    return "error parsing"

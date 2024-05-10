@@ -11,7 +11,7 @@ def unpack_json(path: str) -> Any:
     :return: переобразованный json файл в list[dict] или пустой список
     """
     try:
-        with open(path, "r", encoding="utf8") as file:
+        with open(os.path.relpath(path), "r", encoding="utf8") as file:
             try:
                 data = json.load(file)
             except json.JSONDecodeError:
