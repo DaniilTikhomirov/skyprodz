@@ -1,32 +1,25 @@
-import pytest
-from src.utils import unpack_json
-from unittest.mock import Mock
+import json
+from datetime import datetime
+
+from src.utils import unpack_json, write_xml_from_web
+from unittest.mock import Mock, patch
 import os.path
 
 
-@pytest.fixture
-def data() -> dict:
-    return {
-        "id": 441945886,
-        "state": "EXECUTED",
-        "date": "2019-08-26T10:50:58.294041",
-        "operationAmount": {
-            "amount": "31957.58",
-            "currency": {
-                "name": "руб.",
-                "code": "RUB"
-            }
-        },
-        "description": "Перевод организации",
-        "from": "Maestro 1596837868705199",
-        "to": "Счет 64686473678894779589"
-    }
+@patch('builtins.open')
+def test_unpack_json(mock_open: Mock) -> None:
+    mock_file = mock_open.return_value.__enter__.return_value
+    mock_file.read.return_value = json.dumps([{"test": "test"}])
+    assert unpack_json(os.path.join("..", "data", "operations.json"))
+    mock_open.assert_called_once_with(os.path.join("..", "data", "operations.json"), 'r', encoding="utf8")
 
 
-def test_unpack_json(data: list[dict]) -> None:
-    assert unpack_json(os.path.join("..", "data", "operations.json"))[0] == data
+def test_write_xml_from_web() -> None:
+    with patch("builtins.open") as mock_open:
+        with patch("requests.get") as mock_get:
+            time_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
+            url = f"https://cbr.ru/scripts/XML_daily.asp?date_req={time_now}"
+            write_xml_from_web(url, "cbr")
+            mock_open.assert_called_once_with(os.path.join("..", "data", "cbr.xml"), 'wb')
+            mock_get.assert_called_once_with(f'https://cbr.ru/scripts/XML_daily.asp?date_req={time_now}')
 
-
-def test_write_xml_from_web(data: list[dict]) -> None:
-    write_xml_from_web_mock = Mock(return_value="xml-file")
-    assert write_xml_from_web_mock() == "xml-file"
