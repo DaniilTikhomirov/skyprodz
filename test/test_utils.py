@@ -14,6 +14,10 @@ def test_unpack_json(mock_open: Mock) -> None:
     mock_open.assert_called_once_with(os.path.join("..", "data", "operations.json"), "r", encoding="utf8")
 
 
+def test_unpack_json_file_error() -> None:
+    assert unpack_json(os.path.join("..", "data", "uio.json")) == []
+
+
 def test_write_xml_from_web() -> None:
     with patch("builtins.open") as mock_open:
         with patch("requests.get") as mock_get:
