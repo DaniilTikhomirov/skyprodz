@@ -3,7 +3,10 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from decimal import Decimal
 
+from src.config_log import setting_log
 from src.utils import write_xml_from_web
+
+logger = setting_log(__name__)
 
 # словарь код валюты: ID валюты
 CODE_CURRENCY = {
@@ -60,6 +63,7 @@ def get_currencies(currency: str) -> Decimal | bool:
     :return: цена валюты
     """
     if currency == "RUB":
+        logger.info("currency is RUB")
         return Decimal("1")
     # получает актуальную дату
     time_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
@@ -68,6 +72,7 @@ def get_currencies(currency: str) -> Decimal | bool:
     # функция которая записывает xml с айта
     write_xml_from_web(url, "cbr")
     # парсим данные с нашего файла
+    logger.info("parse data...")
     three = ET.parse(os.path.join("..", "data", "cbr.xml"))
     # получаем корневой элемент
     root = three.getroot()
@@ -77,8 +82,11 @@ def get_currencies(currency: str) -> Decimal | bool:
             element = child.find("Value")
             if element is not None:
                 value = element.text
-                return Decimal(str(value).replace(",", "."))
+                value_currency = Decimal(str(value).replace(",", "."))
+                logger.info(f"good parse value is {str(value_currency)}")
+                return value_currency
             else:
+                logger.info("bad parse")
                 return False
     return Decimal("0")
 
@@ -92,7 +100,10 @@ def calculate_amount_in_rub(operation: dict) -> Decimal | str:
     code_currency = operation["operationAmount"]["currency"]["code"]
     amount = operation["operationAmount"]["amount"]
     currency = get_currencies(code_currency)
+    logger.info("calculate...")
     if currency:
         amount_in_rub = Decimal(amount) * currency
+        logger.info(f"calculate {amount_in_rub}")
         return amount_in_rub
+    logger.info("error parsing")
     return "error parsing"
