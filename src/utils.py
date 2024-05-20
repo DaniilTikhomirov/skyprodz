@@ -1,7 +1,8 @@
 import json
-from typing import Any
-import requests
 import os.path
+from typing import Any
+
+import requests
 
 
 def unpack_json(path: str) -> Any:

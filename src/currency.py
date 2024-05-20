@@ -1,8 +1,9 @@
-from decimal import Decimal
+import os.path
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from decimal import Decimal
+
 from src.utils import write_xml_from_web
-import os.path
 
 # словарь код валюты: ID валюты
 CODE_CURRENCY = {
