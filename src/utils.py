@@ -2,6 +2,7 @@ import json
 import os.path
 from typing import Any
 
+import pandas as pd
 import requests
 
 from src.config_log import setting_log
@@ -43,3 +44,19 @@ def write_xml_from_web(url: str, name: str) -> None:
     with open(os.path.join("..", "data", f"{name}.xml"), "wb") as file:
         logger.info("write xml file")
         file.write(req.content)
+
+
+def unpack_csv(path: str) -> Any:
+    """распоковывает cvs"""
+    logger.info("unpacking csv...")
+    unpack = pd.read_csv(path, encoding="utf8")
+    logger.info("unpack")
+    return unpack
+
+
+def unpack_excel(path: str) -> Any:
+    """распоковывает exel"""
+    logger.info("unpacking excel...")
+    unpack = pd.read_excel(path)
+    logger.info("unpack")
+    return unpack
