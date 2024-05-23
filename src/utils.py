@@ -46,17 +46,19 @@ def write_xml_from_web(url: str, name: str) -> None:
         file.write(req.content)
 
 
-def unpack_csv(path: str) -> Any:
+def unpack_csv(path: str) -> list:
     """распоковывает cvs"""
     logger.info("unpacking csv...")
-    unpack = pd.read_csv(path, encoding="utf8")
+    csv_file = pd.read_csv(path, encoding="utf-8", sep=";")
+    json_csv = csv_file.to_dict(orient="records")
     logger.info("unpack")
-    return unpack
+    return json_csv
 
 
-def unpack_excel(path: str) -> Any:
+def unpack_excel(path: str) -> list:
     """распоковывает exel"""
     logger.info("unpacking excel...")
-    unpack = pd.read_excel(path)
+    formating_excel = pd.read_excel(path)
+    json_excel = formating_excel.to_dict(orient="records")
     logger.info("unpack")
-    return unpack
+    return json_excel
