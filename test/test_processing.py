@@ -1,6 +1,6 @@
 import pytest
 
-from src.processing import filter_dict, sort_dict, find_description
+from src.processing import filter_dict, sort_dict
 
 
 @pytest.fixture
@@ -213,19 +213,4 @@ def data2() -> list[dict]:
         }]
 
 
-def test_find_description(data2: list[dict]) -> None:
-    answer = [{'date': '2018-03-23T10:45:06.972075',
-               'description': 'Открытие вклада',
-               'id': 587085106,
-               'operationAmount': {'amount': '48223.05',
-                                   'currency': {'code': 'RUB', 'name': 'руб.'}},
-               'state': 'EXECUTED',
-               'to': 'Счет 41421565395219882431'},
-              {'date': '2018-07-11T02:26:18.671407',
-               'description': 'Открытие вклада',
-               'id': 596171168,
-               'operationAmount': {'amount': '79931.03',
-                                   'currency': {'code': 'RUB', 'name': 'руб.'}},
-               'state': 'EXECUTED',
-               'to': 'Счет 72082042523231456215'}]
-    assert find_description(data2, "Открытие вклада") == answer
+
