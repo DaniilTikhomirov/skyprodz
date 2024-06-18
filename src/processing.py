@@ -14,7 +14,7 @@ def sort_dict(dictionary: list[dict], reverse: bool = False) -> list[dict]:
 
 def find_description(data: list[dict], find_line: str) -> list:
     """фильтрует данные по строке"""
-    return list(filter(lambda x: re.search(find_line, x.get("description", "")), data))
+    return list(filter(lambda x: re.search(find_line.lower(), x.get("description", "").lower()), data))
 
 
 def count_category(data: list[dict], category: list) -> dict:
